@@ -1,0 +1,5 @@
+<% suggestion = Spree::Config.searcher.spelling_suggestion %>
+<% if suggestion %>
+  <%= t(:did_you_mean, :default => "Did you mean") %> 
+  <%= link_to h(suggestion), :overwrite_params => { :keywords => suggestion } %>?
+<% end %>
