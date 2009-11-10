@@ -9,6 +9,7 @@ If you already install Xapian:
 
     script/extension install git://github.com/romul/spree-xapit-search.git
 
+**NOTE:** This extension works only with Spree 0.9.99 and higher.
     
 ### Index (copied from Xapit README)
 
