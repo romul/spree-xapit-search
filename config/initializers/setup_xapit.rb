@@ -1,1 +1,1 @@
-Xapit.setup(:database_path => "#{SPREE_ROOT}/db/xapiandb")
+Xapit.setup(:database_path => "#{RAILS_ROOT}/db/xapiandb")
