@@ -18,7 +18,26 @@ class XapitSearchExtension < Spree::Extension
     Product.class_eval do
       xapit do |index|
         index.text :name, :description
+        index.field :individual_sale, :deleted_at, :available_on, :taxon_ids
+        index.facet :gender_property, "Gender"
+        index.facet :brand_property, "Brand"
       end
+      
+      def taxon_ids
+        taxons.map(&:id)
+      end
+      
+      private
+      
+      def gender_property
+        gender = product_properties.detect {|pp| pp.property.name == "gender"}
+        gender ? gender.value : ""
+      end
+      
+      def brand_property
+        brand = product_properties.detect {|pp| pp.property.name == "brand"}
+        brand ? brand.value : ""
+      end     
     end
     
     Spree::Config.searcher = Spree::Search::Xapit.new

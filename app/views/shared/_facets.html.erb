@@ -1,0 +1,12 @@
+<% facets = Spree::Config.searcher.facets || [] %>
+<% for facet in facets %>
+  <h4><%= facet.name %></h4>
+  <ul>
+  <% for option in facet.options %>
+    <li>
+      <%= link_to option.name, :overwrite_params => { :facets => option } %>
+      (<%= option.count %>)
+    </li>
+  <% end %>
+  </ul>
+<% end %>
