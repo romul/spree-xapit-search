@@ -18,7 +18,7 @@ class XapitSearchExtension < Spree::Extension
     Product.class_eval do
       xapit do |index|
         index.text :name, :description
-        index.field :individual_sale, :deleted_at, :available_on, :taxon_ids
+        index.field :individual_sale, :deleted_at, :available_on, :count_on_hand, :taxon_ids
         index.facet :gender_property, "Gender"
         index.facet :brand_property, "Brand"
       end

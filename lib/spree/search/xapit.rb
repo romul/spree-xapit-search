@@ -5,9 +5,14 @@ module Spree::Search
       conditions = {:individual_sale => true, :deleted_at => nil,
                     :available_on => 5.years.ago..Time.zone.now }
       conditions.merge!(:taxon_ids => [taxon_id]) if taxon_id && taxon_id > 0
-
+      
+      not_conditions = Spree::Config[:allow_backorders] ? 
+                       { :count_on_hand => 0 } : {}
+      
       products = Product.search(query, 
         :conditions => conditions,
+        :not_conditions => not_conditions,
+        :per_page => 1000,
         :facets => @properties[:facets_hash])
 
       @properties[:spelling_suggestion] = products.spelling_suggestion
