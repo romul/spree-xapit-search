@@ -22,6 +22,7 @@ class XapitSearchExtension < Spree::Extension
         index.facet :gender_property, "Gender"
         index.facet :brand_property, "Brand"
         index.facet :price_range, "Price"
+        index.facet :taxon_names, "Taxon"
       end
       
       def taxon_ids
@@ -38,6 +39,10 @@ class XapitSearchExtension < Spree::Extension
       def brand_property
         brand = product_properties.detect {|pp| pp.property.name == "brand"}
         brand ? brand.value : ""
+      end
+      
+      def taxon_names
+        taxons.map(&:name)
       end
       
       def price_range
