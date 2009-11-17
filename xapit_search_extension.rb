@@ -15,10 +15,15 @@ class XapitSearchExtension < Spree::Extension
   def activate
     require 'xapit'
     
+    index_product_fields = [:deleted_at, :available_on, :count_on_hand, :taxon_ids]
+    if Product.column_names.include?("individual_sale")
+      index_product_fields << :individual_sale 
+    end
+    
     Product.class_eval do
       xapit do |index|
         index.text :name, :description
-        index.field :individual_sale, :deleted_at, :available_on, :count_on_hand, :taxon_ids
+        index_product_fields.each { |f| index.field f }
         index.facet :gender_property, "Gender"
         index.facet :brand_property, "Brand"
         index.facet :price_range, "Price"
