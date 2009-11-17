@@ -21,6 +21,7 @@ class XapitSearchExtension < Spree::Extension
         index.field :individual_sale, :deleted_at, :available_on, :count_on_hand, :taxon_ids
         index.facet :gender_property, "Gender"
         index.facet :brand_property, "Brand"
+        index.facet :price_range, "Price"
       end
       
       def taxon_ids
@@ -37,7 +38,22 @@ class XapitSearchExtension < Spree::Extension
       def brand_property
         brand = product_properties.detect {|pp| pp.property.name == "brand"}
         brand ? brand.value : ""
-      end     
+      end
+      
+      def price_range
+        case price
+          when 0..25
+            "Under $25"
+          when 25..50
+            "$25 to $50"
+          when 50..100
+            "$50 to $100"
+          when 100..200
+            "$100 to $200"
+          else
+            "$200 & Above"
+        end
+      end
     end
     
     Spree::Config.searcher = Spree::Search::Xapit.new
