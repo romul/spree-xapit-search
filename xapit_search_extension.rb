@@ -28,6 +28,7 @@ class XapitSearchExtension < Spree::Extension
         index.facet :brand_property, "Brand"
         index.facet :price_range, "Price"
         index.facet :taxon_names, "Taxon"
+        index.sortable :price
       end
       
       def taxon_ids

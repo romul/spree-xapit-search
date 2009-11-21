@@ -8,12 +8,15 @@ module Spree::Search
 
       not_conditions = Spree::Config[:allow_backorders] ? {} : { :count_on_hand => 0 }
 
-      products = Product.search(query, 
-        :conditions => conditions,
-        :not_conditions => not_conditions,
-        :per_page => per_page,
-        :page => page,
-        :facets => @properties[:facets_hash])
+      search_options = {:conditions => conditions,
+                        :not_conditions => not_conditions,
+                        :per_page => per_page,
+                        :page => page,
+                        :facets => @properties[:facets_hash]}
+      if order_by_price
+        search_options.merge!(:order => [:price], :descending => order_by_price == 'descend')
+      end
+      products = Product.search(query, search_options)
 
       @properties[:products] = products
       @properties[:spelling_suggestion] = products.spelling_suggestion
@@ -28,6 +31,7 @@ module Spree::Search
       @properties[:per_page] = params[:per_page]
       @properties[:page] = params[:page]
       @properties[:manage_pagination] = true
+      @properties[:order_by_price] = params[:order_by_price]
     end
   end
 end
