@@ -27,6 +27,7 @@ module Spree::Search
       @properties[:taxon] = params[:taxon].blank? ? nil : Taxon.find(params[:taxon])
       @properties[:per_page] = params[:per_page]
       @properties[:page] = params[:page]
+      @properties[:manage_pagination] = true
     end
   end
 end
