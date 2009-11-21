@@ -16,7 +16,7 @@ class XapitSearchExtension < Spree::Extension
     require 'xapit'
     
     index_product_fields = [:deleted_at, :available_on, :count_on_hand, :taxon_ids]
-    if Product.column_names.include?("individual_sale")
+    if Product.table_exists? && Product.column_names.include?("individual_sale")
       index_product_fields << :individual_sale 
     end
     
