@@ -11,9 +11,11 @@ module Spree::Search
       products = Product.search(query, 
         :conditions => conditions,
         :not_conditions => not_conditions,
-        :per_page => 1000,
+        :per_page => per_page,
+        :page => page,
         :facets => @properties[:facets_hash])
 
+      @properties[:products] = products
       @properties[:spelling_suggestion] = products.spelling_suggestion
       @properties[:facets] = products.facets
 
@@ -22,7 +24,9 @@ module Spree::Search
 
     def prepare(params)
       @properties[:facets_hash] = params[:facets]
-      @properties[:taxon] = params[:taxon].blank? ? nil : Taxon.find(params[:taxon]) 
+      @properties[:taxon] = params[:taxon].blank? ? nil : Taxon.find(params[:taxon])
+      @properties[:per_page] = params[:per_page]
+      @properties[:page] = params[:page]
     end
   end
 end
