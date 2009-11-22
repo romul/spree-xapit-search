@@ -15,15 +15,10 @@ class XapitSearchExtension < Spree::Extension
   def activate
     require 'xapit'
     
-    index_product_fields = [:deleted_at, :available_on, :count_on_hand, :taxon_ids]
-    if Product.table_exists? && Product.column_names.include?("individual_sale")
-      index_product_fields << :individual_sale 
-    end
-    
     Product.class_eval do
       xapit do |index|
         index.text :name, :description
-        index_product_fields.each { |f| index.field f }
+        index.field :is_active, :taxon_ids
         index.facet :gender_property, "Gender"
         index.facet :brand_property, "Brand"
         index.facet :price_range, "Price"
@@ -35,7 +30,13 @@ class XapitSearchExtension < Spree::Extension
         taxons.map(&:id)
       end
       
-      private
+      def is_active
+        !deleted_at && 
+          (available_on <= Time.zone.now) && 
+            (Spree::Config[:allow_backorders] || count_on_hand > 0)
+      end
+      
+      private            
       
       def gender_property
         gender = product_properties.detect {|pp| pp.property.name == "gender"}
