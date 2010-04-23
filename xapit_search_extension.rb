@@ -31,7 +31,7 @@ class XapitSearchExtension < Spree::Extension
       end
       
       def is_active
-        !deleted_at && 
+        !deleted_at && available_on &&
           (available_on <= Time.zone.now) && 
             (Spree::Config[:allow_backorders] || count_on_hand > 0)
       end
